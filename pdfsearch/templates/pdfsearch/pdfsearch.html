@@ -24,9 +24,9 @@
 						</div>
 					</div>
 					<div class="row">
-						{% if inner_dict|length > 1 %}
+						{% if inner_dict|length > 0 %}
 							{% for page_no, page_text in inner_dict.items %}
-								{% ifnotequal forloop.counter0 0 %}
+								{% if forloop.counter0 != 0 %}
 									<div class="col-12">
 										<hr><b><p class="text-center">Page no. {{page_no}}</p></b>
 										<p class="lh-lg" style="text-align: justify;">{{page_text|highlight_all_search:search_text_list}}
@@ -34,7 +34,7 @@
 										{% include 'core/pageform.html' %}
 										{% include 'core/bookform.html' %}
 									</div>
-								{% endifnotequal %}
+								{% endif %}
 							{% endfor %}
 						{% else %}
 							<div class="col-12">

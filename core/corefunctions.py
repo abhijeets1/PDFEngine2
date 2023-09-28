@@ -1,4 +1,4 @@
-from PyPDF2 import PdfFileMerger, PdfFileReader, PdfFileWriter
+from PyPDF2 import PdfMerger, PdfReader, PdfWriter
 from pdf2image import convert_from_path
 from pytesseract import pytesseract
 from pikepdf import Pdf, Encryption
@@ -19,7 +19,7 @@ def merge_files(filenames, timestamp):
 	pdf_files_path = 'pdfmerge/static/upload/'
 	merged_file_path = 'pdfmerge/static/upload/merged/' + timestamp + '.pdf'
 
-	merger = PdfFileMerger()
+	merger = PdfMerger()
 	for filename in filenames:
 		merger.append(pdf_files_path + filename)
 	merger.write(merged_file_path)
@@ -33,12 +33,12 @@ def split_file(file, pageno, nofpages, timestamp):
 	splited_file_name = timestamp + '.pdf'
 	splited_file_path = 'pdfsplit/static/upload/splited/' + splited_file_name
 
-	pdfreader = PdfFileReader(pdf_file_path)
-	pdfwriter = PdfFileWriter()
+	pdfreader = PdfReader(pdf_file_path)
+	pdfwriter = PdfWriter()
 
 	for no in range(nofpages):
-		page = pdfreader.getPage((pageno-1)+no)
-		pdfwriter.addPage(page)
+		page = pdfreader.pages[(pageno - 1) + no]
+		pdfwriter.add_page(page)
 	with open(splited_file_path, 'wb+') as f:
 		pdfwriter.write(f)
 
@@ -48,8 +48,8 @@ def validate_pdf_split(filename, pageno, nofpages):
 	pdf_file_path = 'pdfsplit/static/upload/' + filename
 
 	pdf = open(pdf_file_path, 'rb+')
-	pdfreader = PdfFileReader(pdf)
-	pdfpages = pdfreader.numPages
+	pdfreader = PdfReader(pdf)
+	pdfpages = len(pdfreader.pages)
 	temp = (pdfpages - pageno) + 1
 	exceptions = []
 
@@ -71,8 +71,8 @@ def encrypt_file(file, password, timestamp):
 	encrypted_file_path = 'pdfencrypt/static/upload/encrypted/' + encrypted_file_name
 	exceptions = []
 
-	pdfreader = PdfFileReader(pdf_file_path)
-	if pdfreader.isEncrypted:
+	pdfreader = PdfReader(pdf_file_path)
+	if pdfreader.is_encrypted:
 		exceptions.append('PDF file is already encryted!')
 
 	if len(exceptions) > 0:
@@ -92,8 +92,8 @@ def decrypt_file(file, password, timestamp):
 	decrypted_file_path = 'pdfdecrypt/static/upload/decrypted/' + decrypted_file_name
 	exceptions = []
 
-	pdfreader = PdfFileReader(pdf_file_path)
-	if not pdfreader.isEncrypted:
+	pdfreader = PdfReader(pdf_file_path)
+	if not pdfreader.is_encrypted:
 		exceptions.append('PDF file is not encryted!')
 	try:
 		pdf = Pdf.open(pdf_file_path, password=password)
