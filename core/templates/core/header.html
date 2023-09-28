@@ -1,0 +1,27 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow p-2">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="{% url 'index' %}">
+			<img src="{% static 'core/images/logowhite.png' %}" style="width: 5rem;">
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNavDropdown">
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'index' %}">HOME</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'sitedes' %}">DESCRIPTION</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'aboutdevs' %}">ABOUT DEVELOPERS</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'pdflist' %}">E-BOOKs LIST</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
