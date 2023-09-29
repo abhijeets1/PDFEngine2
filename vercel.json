@@ -1,0 +1,14 @@
+{
+    "builds": [
+      {
+        "src": "PDFEngine/wsgi.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "PDFEngine/wsgi.py"
+      }
+    ]
+}
